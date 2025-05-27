@@ -3,3 +3,6 @@ google-genai
 python-dotenv
 streamlit
 yfinance
+beautifulsoup4
+requests 
+agno
