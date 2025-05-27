@@ -1,10 +1,8 @@
-# scraping_agent.py
-
 import os
 from dotenv import load_dotenv
 from agno.agent import Agent
 from agno.models.google import Gemini
-from utils import fetch_website_content
+from utils import crawl
 from company_urls import company_urls
 
 # Load environment variables from .env
@@ -24,18 +22,20 @@ agent = Agent(
     markdown=True,
 )
 
-def summarize_company_website(company_name):
+def summarize_company_financials(company_name):
     url = company_urls.get(company_name)
     if not url:
         print(f"URL for {company_name} not found.")
         return
-    content = fetch_website_content(url)
-    if content:
-        agent.print_response(f"Summarize the following content from {company_name}:\n\n{content}")
+    data = crawl(url)
+    if data:
+        prompt = f"Financial data extracted in english from {company_name}:\n\n{data}"
+        agent.print_response(prompt)
+        # agent.print_response(f"Financial data extracted from {company_name}:\n\n{data}")
     else:
-        print(f"Failed to retrieve content from {url}.")
+        print(f"No financial data found for {company_name}.")
 
 # Example usage
 if __name__ == "__main__":
     company_name = "Tata Consultancy Services (TCS)"
-    summarize_company_website(company_name)
+    summarize_company_financials(company_name)
