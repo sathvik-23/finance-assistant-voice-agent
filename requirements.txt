@@ -6,3 +6,7 @@ yfinance
 beautifulsoup4
 requests 
 agno
+
+pinecone-client
+langchain
+tiktoken
